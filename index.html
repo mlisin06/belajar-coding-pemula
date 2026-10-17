@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KodePintar - Belajar Coding Interaktif</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Header / Navigation -->
+    <header class="bg-slate-800/90 border-b border-slate-700/80 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 p-2.5 rounded-xl shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid font-bold fa-code text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+                        KodePintar
+                    </h1>
+                    <p class="text-xs text-slate-400">Playground & Belajar Coding Pemula</p>
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <button id="btn-toggle-lessons" onclick="toggleLessonSidebar()" class="px-3 py-2 bg-slate-700/80 hover:bg-slate-700 text-slate-200 rounded-lg text-sm font-medium transition flex items-center gap-2 border border-slate-600">
+                    <i class="fa-solid fa-book-open text-amber-400"></i>
+                    <span class="hidden sm:inline">Modul Belajar</span>
+                </button>
+                <button onclick="runCode()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg text-sm transition flex items-center gap-2 shadow-lg shadow-emerald-600/30 active:scale-95">
+                    <i class="fa-solid fa-play"></i>
+                    <span>Jalankan</span>
+                </button>
+                <button onclick="resetEditor()" class="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition" title="Reset Kode">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-0 relative overflow-hidden">
+        
+        <!-- Sidebar Modul Belajar (Materi & Tantangan) -->
+        <aside id="lesson-sidebar" class="lg:col-span-3 bg-slate-800/50 border-r border-slate-700/80 flex flex-col h-[calc(100vh-4rem)] overflow-y-auto hidden lg:flex transition-all">
+            <div class="p-4 border-b border-slate-700/80 flex justify-between items-center bg-slate-800/80">
+                <h2 class="font-semibold text-slate-200 flex items-center gap-2 text-base">
+                    <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
+                    Modul Belajar
+                </h2>
+                <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-full border border-indigo-500/30">Pemula</span>
+            </div>
+
+            <!-- Accordion List Modul -->
+            <div class="p-4 space-y-4 flex-1">
+                
+                <!-- Modul 1 -->
+                <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4 shadow-sm hover:border-slate-600 transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider">Pelajaran 1</span>
+                        <i class="fa-brands fa-html5 text-orange-500 text-lg"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-100 text-sm mb-1">Halo Dunia (HTML Dasar)</h3>
+                    <p class="text-xs text-slate-400 mb-3 leading-relaxed">
+                        Pelajari struktur dasar tag tag judul <code>&lt;h1&gt;</code> dan paragraf <code>&lt;p&gt;</code> untuk menampilkan teks di web.
+                    </p>
+                    <button onclick="loadLesson(1)" class="w-full py-2 px-3 bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white rounded-lg text-xs font-medium transition border border-blue-500/30 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i> Muat ke Editor
+                    </button>
+                </div>
+
+                <!-- Modul 2 -->
+                <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4 shadow-sm hover:border-slate-600 transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Pelajaran 2</span>
+                        <i class="fa-brands fa-css3-alt text-blue-500 text-lg"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-100 text-sm mb-1">Memberi Warna (CSS Dasar)</h3>
+                    <p class="text-xs text-slate-400 mb-3 leading-relaxed">
+                        Gunakan CSS untuk mempercantik tampilan elemen dengan mengatur warna teks (<code>color</code>) dan latar (<code>background</code>).
+                    </p>
+                    <button onclick="loadLesson(2)" class="w-full py-2 px-3 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white rounded-lg text-xs font-medium transition border border-emerald-500/30 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i> Muat ke Editor
+                    </button>
+                </div>
+
+                <!-- Modul 3 -->
+                <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4 shadow-sm hover:border-slate-600 transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Pelajaran 3</span>
+                        <i class="fa-brands fa-js text-yellow-400 text-lg"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-100 text-sm mb-1">Tombol Interaktif (JS Dasar)</h3>
+                    <p class="text-xs text-slate-400 mb-3 leading-relaxed">
+                        Buat halaman web menjadi hidup dan dapat merespons klik pengguna menggunakan JavaScript!
+                    </p>
+                    <button onclick="loadLesson(3)" class="w-full py-2 px-3 bg-amber-600/20 hover:bg-amber-600 text-amber-300 hover:text-white rounded-lg text-xs font-medium transition border border-amber-500/30 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i> Muat ke Editor
+                    </button>
+                </div>
+
+                <!-- Information Card -->
+                <div class="bg-indigo-950/40 border border-indigo-800/50 rounded-xl p-3.5 text-xs text-indigo-300 flex items-start gap-2.5">
+                    <i class="fa-solid fa-lightbulb text-amber-400 text-base mt-0.5"></i>
+                    <div>
+                        <span class="font-semibold block text-indigo-200 mb-0.5">Tips Belajar:</span>
+                        Ubah kode di editor dan klik tombol <b>Jalankan</b> atau aktifkan Auto-Run untuk melihat perubahannya secara langsung!
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- Area Editor Kode (Tengah/Kiri) -->
+        <section id="editor-section" class="lg:col-span-5 border-r border-slate-700/80 flex flex-col h-[50vh] lg:h-[calc(100vh-4rem)] bg-slate-900">
+            
+            <!-- Editor Tabs Header -->
+            <div class="flex items-center justify-between bg-slate-800/90 border-b border-slate-700/80 px-2 overflow-x-auto">
+                <div class="flex space-x-1">
+                    <button id="tab-html" onclick="switchTab('html')" class="tab-btn px-4 py-2.5 text-xs font-medium rounded-t-lg transition flex items-center gap-2 border-b-2 border-blue-500 bg-slate-900 text-blue-400">
+                        <i class="fa-brands fa-html5 text-orange-500"></i> HTML
+                    </button>
+                    <button id="tab-css" onclick="switchTab('css')" class="tab-btn px-4 py-2.5 text-xs font-medium rounded-t-lg transition flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+                        <i class="fa-brands fa-css3-alt text-blue-500"></i> CSS
+                    </button>
+                    <button id="tab-js" onclick="switchTab('js')" class="tab-btn px-4 py-2.5 text-xs font-medium rounded-t-lg transition flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+                        <i class="fa-brands fa-js text-yellow-400"></i> JavaScript
+                    </button>
+                </div>
+
+                <!-- Toggle Auto Run -->
+                <div class="flex items-center gap-2 px-2 py-1 text-xs text-slate-400">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="auto-run-toggle" class="sr-only peer" checked>
+                        <div class="w-7 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600 relative"></div>
+                    </label>
+                    <span class="hidden sm:inline text-[11px]">Auto-run</span>
+                </div>
+            </div>
+
+            <!-- Editor Wrapper dengan Line Numbers -->
+            <div class="flex-1 relative flex overflow-hidden code-font text-xs sm:text-sm">
+                <!-- Line Numbers Container -->
+                <div id="line-numbers" class="w-10 sm:w-12 py-3 bg-slate-900/90 text-slate-600 text-right pr-3 select-none border-r border-slate-800 font-mono">
+                    1
+                </div>
+
+                <!-- Textarea Editors (HTML, CSS, JS) -->
+                <div class="flex-1 relative h-full">
+                    <textarea id="code-html" class="editor-input w-full h-full bg-transparent text-slate-100 p-3 outline-none resize-none font-mono leading-relaxed" spellcheck="false" placeholder="Tulis kode HTML di sini..."></textarea>
+                    <textarea id="code-css" class="editor-input w-full h-full bg-transparent text-slate-100 p-3 outline-none resize-none font-mono leading-relaxed hidden" spellcheck="false" placeholder="Tulis kode CSS di sini..."></textarea>
+                    <textarea id="code-js" class="editor-input w-full h-full bg-transparent text-slate-100 p-3 outline-none resize-none font-mono leading-relaxed hidden" spellcheck="false" placeholder="Tulis kode JavaScript di sini..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- Area Preview & Konsol Output (Kanan/Bawah) -->
+        <section id="preview-section" class="lg:col-span-4 flex flex-col h-[50vh] lg:h-[calc(100vh-4rem)] bg-slate-950">
+            
+            <!-- Live Preview Header -->
+            <div class="bg-slate-800/90 border-b border-slate-700/80 px-4 py-2 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                    <span class="text-xs font-medium text-slate-400 ml-2">Hasil Tampilan (Live Preview)</span>
+                </div>
+                <button onclick="runCode()" class="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+                    <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                </button>
+            </div>
+
+            <!-- Preview Iframe -->
+            <div class="flex-1 bg-white relative">
+                <iframe id="preview-iframe" class="w-full h-full border-none" title="Hasil Preview"></iframe>
+            </div>
+
+            <!-- Konsol Output JavaScript -->
+            <div class="h-1/3 bg-slate-900 border-t border-slate-800 flex flex-col">
+                <div class="bg-slate-800/60 px-4 py-1.5 border-b border-slate-800 flex justify-between items-center">
+                    <span class="text-xs font-semibold text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-terminal text-emerald-400"></i> Konsol Output
+                    </span>
+                    <button onclick="clearConsole()" class="text-[11px] text-slate-400 hover:text-slate-200 transition">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Bersihkan
+                    </button>
+                </div>
+                <div id="console-output" class="flex-1 p-3 code-font text-xs overflow-y-auto space-y-1 text-slate-300">
+                    <div class="text-slate-500 italic">// Konsol siap. Hasil console.log() akan muncul di sini...</div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Modal Notifikasi Sederhana -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-indigo-600 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none z-50">
+        <i id="toast-icon" class="fa-solid fa-circle-check"></i>
+        <span id="toast-message" class="text-sm font-medium">Notifikasi</span>
+    </div>
+
+    <!-- Script Logic Aplikasi -->
+    <script>
+        // Store kode default per pelajaran
+        const lessons = {
+            1: {
+                html: `<!-- Pelajaran 1: Halo Dunia -->\n<h1>Halo, Dunia! 👋</h1>\n<p>Selamat datang di kelas coding pemula.</p>\n<p>Coba ubah teks ini sesuai keinginanmu!</p>`,
+                css: `/* Styling untuk Pelajaran 1 */\nh1 {\n  color: #2563eb;\n}\np {\n  color: #475569;\n  font-size: 16px;\n}`,
+                js: `// Kode JavaScript\nconsole.log("Pelajaran 1 Berhasil Dimuat!");`
+            },
+            2: {
+                html: `<!-- Pelajaran 2: Memberi Warna & Gaya -->\n<div class="card">\n  <h2>Kartu Profil Kode</h2>\n  <p>CSS digunakan untuk mengatur tampilan visual web agar lebih menarik.</p>\n  <button class="btn">Tombol Keren</button>\n</div>`,
+                css: `/* Styling Pelajaran 2 */\nbody {\n  font-family: sans-serif;\n  background-color: #f1f5f9;\n  padding: 20px;\n}\n\n.card {\n  background: white;\n  padding: 20px;\n  border-radius: 12px;\n  box-shadow: 0 4px 6px rgba(0,0,0,0.1);\n}\n\nh2 {\n  color: #0f172a;\n}\n\n.btn {\n  background-color: #10b981;\n  color: white;\n  border: none;\n  padding: 10px 18px;\n  border-radius: 8px;\n  cursor: pointer;\n}`,
+                js: `console.log("CSS berhasil diterapkan pada HTML!");`
+            },
+            3: {
+                html: `<!-- Pelajaran 3: Tombol Interaktif -->\n<div class="container">\n  <h2 id="judul">Klik Tombol di Bawah!</h2>\n  <button onclick="ubahTeks()">Ubah Teks</button>\n  <button onclick="sapa()">Sapa Saya</button>\n</div>`,
+                css: `/* Style Sederhana */\nbody {\n  font-family: Arial, sans-serif;\n  text-align: center;\n  padding-top: 30px;\n}\n\nbutton {\n  background-color: #6366f1;\n  color: white;\n  border: none;\n  padding: 10px 15px;\n  margin: 5px;\n  border-radius: 6px;\n  font-weight: bold;\n  cursor: pointer;\n}`,
+                js: `// Fungsi untuk mengubah teks pada elemen HTML\nfunction ubahTeks() {\n  const judul = document.getElementById('judul');\n  judul.innerHTML = '🎉 Wow, kamu berhasil mengubah teks!';\n  console.log('Teks judul berhasil diubah!');\n}\n\n// Fungsi menyapa pengguna\nfunction sapa() {\n  alert('Halo! Selamat belajar coding!');\n  console.log('Pesan sapaan telah muncul.');\n}`
+            }
+        };
+
+        let currentTab = 'html';
+
+        // Inisialisasi saat window dimuat
+        window.onload = function() {
+            // Load Pelajaran 1 secara default
+            loadLesson(1);
+            
+            // Register event listeners untuk update line numbers & auto-run
+            ['html', 'css', 'js'].forEach(lang => {
+                const textarea = document.getElementById(`code-${lang}`);
+                textarea.addEventListener('input', () => {
+                    updateLineNumbers();
+                    if (document.getElementById('auto-run-toggle').checked) {
+                        runCode();
+                    }
+                });
+                textarea.addEventListener('scroll', syncScroll);
+            });
+
+            updateLineNumbers();
+        };
+
+        // Ganti Tab Editor (HTML, CSS, JS)
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Sembunyikan semua editor
+            document.querySelectorAll('.editor-input').forEach(el => el.classList.add('hidden'));
+            
+            // Reset gaya tombol tab
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-900', 'text-blue-400', 'text-emerald-400', 'text-yellow-400', 'border-blue-500', 'border-emerald-500', 'border-yellow-500');
+                btn.classList.add('border-transparent', 'text-slate-400');
+            });
+
+            // Tampilkan editor aktif
+            const activeEditor = document.getElementById(`code-${tab}`);
+            activeEditor.classList.remove('hidden');
+
+            // Set gaya tombol aktif
+            const activeTabBtn = document.getElementById(`tab-${tab}`);
+            activeTabBtn.classList.remove('border-transparent', 'text-slate-400');
+            
+            if (tab === 'html') {
+                activeTabBtn.classList.add('bg-slate-900', 'text-blue-400', 'border-blue-500');
+            } else if (tab === 'css') {
+                activeTabBtn.classList.add('bg-slate-900', 'text-emerald-400', 'border-emerald-500');
+            } else if (tab === 'js') {
+                activeTabBtn.classList.add('bg-slate-900', 'text-yellow-400', 'border-yellow-500');
+            }
+
+            updateLineNumbers();
+        }
+
+        // Hitung dan update nomor baris pada editor aktif
+        function updateLineNumbers() {
+            const activeEditor = document.getElementById(`code-${currentTab}`);
+            const lines = activeEditor.value.split('\n').length;
+            const lineNumbersContainer = document.getElementById('line-numbers');
+            
+            let linesHTML = '';
+            for (let i = 1; i <= Math.max(lines, 1); i++) {
+                linesHTML += `<div>${i}</div>`;
+            }
+            lineNumbersContainer.innerHTML = linesHTML;
+        }
+
+        // Sync Scroll antara Line Numbers dan Textarea
+        function syncScroll() {
+            const activeEditor = document.getElementById(`code-${currentTab}`);
+            const lineNumbersContainer = document.getElementById('line-numbers');
+            lineNumbersContainer.scrollTop = activeEditor.scrollTop;
+        }
+
+        // Fungsi Menjalankan Kode (Render ke iframe & tangkap console.log)
+        function runCode() {
+            const htmlCode = document.getElementById('code-html').value;
+            const cssCode = document.getElementById('code-css').value;
+            const jsCode = document.getElementById('code-js').value;
+            const iframe = document.getElementById('preview-iframe');
+
+            // Menangkap log dari iframe agar tampil di konsol UI
+            const consoleOverrideScript = `
+                <script>
+                    (function() {
+                        const oldLog = console.log;
+                        const oldError = console.error;
+                        
+                        console.log = function(...args) {
+                            oldLog.apply(console, args);
+                            window.parent.postMessage({ type: 'log', data: args.join(' ') }, '*');
+                        };
+
+                        console.error = function(...args) {
+                            oldError.apply(console, args);
+                            window.parent.postMessage({ type: 'error', data: args.join(' ') }, '*');
+                        };
+                    })();
+                <\/script>
+            `;
+
+            // Struktur HTML Lengkap untuk iframe
+            const combinedSource = `
+                <!DOCTYPE html>
+                <html lang="id">
+                <head>
+                    <meta charset="UTF-8">
+                    <style>${cssCode}</style>
+                    ${consoleOverrideScript}
+                </head>
+                <body>
+                    ${htmlCode}
+                    <script>
+                        try {
+                            ${jsCode}
+                        } catch (err) {
+                            console.error(err.message);
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `;
+
+            // Inject kode ke iframe
+            iframe.srcdoc = combinedSource;
+        }
+
+        // Terima pesan log dari iframe untuk ditampilkan di konsol aplikasi
+        window.addEventListener('message', function(event) {
+            if (event.data && (event.data.type === 'log' || event.data.type === 'error')) {
+                appendConsoleOutput(event.data.data, event.data.type);
+            }
+        });
+
+        // Tambahkan baris teks ke tampilan konsol
+        function appendConsoleOutput(message, type = 'log') {
+            const consoleBox = document.getElementById('console-output');
+            
+            // Hapus pesan default jika ada
+            if (consoleBox.querySelector('.italic')) {
+                consoleBox.innerHTML = '';
+            }
+
+            const item = document.createElement('div');
+            item.className = 'flex items-start gap-2 py-0.5 border-b border-slate-800/50';
+
+            if (type === 'error') {
+                item.innerHTML = `<span class="text-red-400 font-semibold">[Error]</span> <span class="text-red-300">${escapeHTML(message)}</span>`;
+            } else {
+                item.innerHTML = `<span class="text-emerald-400 font-semibold">&gt;</span> <span>${escapeHTML(message)}</span>`;
+            }
+
+            consoleBox.appendChild(item);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        // Clear isi konsol
+        function clearConsole() {
+            const consoleBox = document.getElementById('console-output');
+            consoleBox.innerHTML = `<div class="text-slate-500 italic">// Konsol dibersihkan.</div>`;
+        }
+
+        // Muat Materi Pelajaran ke Editor
+        function loadLesson(lessonId) {
+            const lesson = lessons[lessonId];
+            if (lesson) {
+                document.getElementById('code-html').value = lesson.html;
+                document.getElementById('code-css').value = lesson.css;
+                document.getElementById('code-js').value = lesson.js;
+
+                clearConsole();
+                updateLineNumbers();
+                runCode();
+                showToast(`Pelajaran ${lessonId} berhasil dimuat ke editor!`);
+            }
+        }
+
+        // Reset Editor Kode
+        function resetEditor() {
+            document.getElementById('code-html').value = '';
+            document.getElementById('code-css').value = '';
+            document.getElementById('code-js').value = '';
+            clearConsole();
+            updateLineNumbers();
+            runCode();
+            showToast('Editor telah dibersihkan.');
+        }
+
+        // Toggle Sidebar Pelajaran (Mobile View/Desktop)
+        function toggleLessonSidebar() {
+            const sidebar = document.getElementById('lesson-sidebar');
+            sidebar.classList.toggle('hidden');
+        }
+
+        // Toast Notification Helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // Helper Escape String HTML untuk Konsol
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+    </script>
+</body>
+</html>
