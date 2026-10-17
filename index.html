@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KodePintar - Belajar Coding Pemula</title>
+  <title>KodePintar - Belajar Coding Pemula Super Mudah</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -26,10 +26,15 @@
       color: #60a5fa !important;
       background-color: #1e293b;
     }
+    .active-side-tab {
+      border-bottom: 2px solid #3b82f6;
+      color: #3b82f6 !important;
+      background-color: #0f172a;
+    }
     /* Scrollbar styling */
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
     }
     ::-webkit-scrollbar-track {
       background: #0f172a;
@@ -46,30 +51,38 @@
 <body class="bg-slate-900 text-slate-100 h-screen flex flex-col font-sans overflow-hidden">
 
   <!-- Header Navigation -->
-  <header class="bg-slate-800 border-b border-slate-700 px-4 py-2.5 flex items-center justify-between shrink-0">
+  <header class="bg-slate-800 border-b border-slate-700 px-4 py-2 flex items-center justify-between shrink-0">
     <div class="flex items-center space-x-3">
-      <div class="bg-blue-600 text-white p-2 rounded-lg flex items-center justify-center font-bold text-lg">
+      <div class="bg-blue-600 text-white p-2 rounded-lg flex items-center justify-center font-bold text-lg shadow">
         <i class="fa-solid fa-code"></i>
       </div>
       <div>
-        <h1 class="font-bold text-lg leading-tight text-white">KodePintar</h1>
-        <p class="text-xs text-slate-400">Platform Belajar Coding Interaktif Pemula</p>
+        <h1 class="font-bold text-lg leading-tight text-white flex items-center gap-2">
+          KodePintar 
+          <span class="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-normal">Ed. Pemula Plus</span>
+        </h1>
+        <p class="text-xs text-slate-400">Belajar Coding Interaktif &amp; Bebas Bingung</p>
       </div>
     </div>
 
     <!-- Actions Header -->
     <div class="flex items-center space-x-2">
-      <button onclick="openDictionaryModal()" class="bg-amber-600 hover:bg-amber-500 text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-colors shadow">
+      <button onclick="openDictionaryModal()" class="bg-amber-600 hover:bg-amber-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors shadow">
         <i class="fa-solid fa-book-open"></i>
-        <span>📖 Kamus Simbol & Kode</span>
+        <span>📖 Kamus Simbol</span>
       </button>
 
-      <button onclick="runCode()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-colors shadow">
-        <i class="fa-solid fa-play text-xs"></i>
+      <button onclick="formatCode()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors">
+        <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+        <span>Rapikan Kode</span>
+      </button>
+
+      <button onclick="runCode()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors shadow">
+        <i class="fa-solid fa-play"></i>
         <span>Jalankan</span>
       </button>
       
-      <button onclick="resetEditor()" class="bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors">
+      <button onclick="resetEditor()" title="Reset Kosong" class="bg-slate-700 hover:bg-slate-600 text-slate-300 px-2.5 py-1.5 rounded-lg text-xs transition-colors">
         <i class="fa-solid fa-rotate-right"></i>
       </button>
     </div>
@@ -78,85 +91,182 @@
   <!-- Main Content Layout -->
   <div class="flex-1 flex overflow-hidden">
     
-    <!-- Left Sidebar: Modules & Guide -->
-    <aside class="w-80 bg-slate-800/80 border-r border-slate-700 flex flex-col shrink-0 overflow-hidden">
-      <div class="p-3 border-b border-slate-700 bg-slate-800 font-semibold text-sm text-slate-300 flex items-center justify-between">
-        <span><i class="fa-solid fa-graduation-cap text-blue-400 mr-2"></i>Modul Belajar</span>
-        <span class="text-xs text-slate-500 font-normal">3 Modul</span>
+    <!-- Left Sidebar: Modules, Challenge & Snippets -->
+    <aside class="w-80 bg-slate-800/90 border-r border-slate-700 flex flex-col shrink-0 overflow-hidden">
+      
+      <!-- Sidebar Navigation Tabs -->
+      <div class="flex border-b border-slate-700 text-xs font-medium bg-slate-900">
+        <button id="sidetab-modules" onclick="switchSideTab('modules')" class="flex-1 py-2.5 text-center text-slate-400 active-side-tab transition-all">
+          <i class="fa-solid fa-graduation-cap mr-1"></i> Modul
+        </button>
+        <button id="sidetab-snippets" onclick="switchSideTab('snippets')" class="flex-1 py-2.5 text-center text-slate-400 transition-all">
+          <i class="fa-solid fa-puzzle-piece mr-1 text-emerald-400"></i> Sisip Kode
+        </button>
+        <button id="sidetab-challenges" onclick="switchSideTab('challenges')" class="flex-1 py-2.5 text-center text-slate-400 transition-all">
+          <i class="fa-solid fa-bullseye mr-1 text-amber-400"></i> Tantangan
+        </button>
       </div>
 
+      <!-- Tab Content Area -->
       <div class="flex-1 overflow-y-auto p-3 space-y-3">
         
-        <!-- Module 1 -->
-        <div class="bg-slate-900/60 border border-slate-700/70 rounded-xl p-3 hover:border-blue-500/50 transition-all">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Modul 1</span>
-            <span class="text-[10px] bg-blue-950 text-blue-300 px-1.5 py-0.5 rounded border border-blue-800">HTML</span>
-          </div>
-          <h3 class="font-medium text-sm text-white mb-1">Halo Dunia & Teks</h3>
-          <p class="text-xs text-slate-400 mb-2">Belajar membuat judul dan paragraf pertama Anda.</p>
+        <!-- SECTION 1: MODULES -->
+        <div id="sidecontent-modules" class="space-y-3">
+          <p class="text-[11px] text-slate-400 mb-1">Pilih modul dasar di bawah ini untuk langsung dicoba di editor:</p>
           
-          <div class="bg-slate-950/70 p-2 rounded text-[11px] text-slate-300 mb-2 border border-slate-800">
-            <span class="text-amber-400 font-semibold">🔍 Bedah Simbol:</span>
-            <ul class="list-disc list-inside mt-1 space-y-0.5 text-slate-400">
-              <li><code class="text-blue-300">&lt;h1&gt;</code> = Pembungkus Judul Utam</li>
-              <li><code class="text-blue-300">&lt;/h1&gt;</code> = Penutup Judul</li>
-              <li><code class="text-blue-300">&lt;p&gt;</code> = Pembungkus Paragraf</li>
-            </ul>
+          <!-- Module 1 -->
+          <div class="bg-slate-900/70 border border-slate-700/80 rounded-xl p-3 hover:border-blue-500/50 transition-all">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Modul 1</span>
+              <span class="text-[10px] bg-blue-950 text-blue-300 px-1.5 py-0.5 rounded border border-blue-800">HTML Dasar</span>
+            </div>
+            <h3 class="font-medium text-sm text-white mb-1">Halo Dunia &amp; Teks</h3>
+            <p class="text-xs text-slate-400 mb-2">Membuat judul besar dan paragraf pertama Anda.</p>
+            
+            <div class="bg-slate-950/80 p-2 rounded text-[11px] text-slate-300 mb-2.5 border border-slate-800">
+              <span class="text-amber-400 font-semibold">🔍 Arti Simbol Utama:</span>
+              <ul class="list-disc list-inside mt-1 space-y-0.5 text-slate-400">
+                <li><code class="text-blue-300">&lt;h1&gt;</code> = Pembungkus Judul Utama</li>
+                <li><code class="text-blue-300">&lt;/h1&gt;</code> = Penutup Judul</li>
+                <li><code class="text-blue-300">&lt;p&gt;</code> = Pembungkus Paragraf Teks</li>
+              </ul>
+            </div>
+
+            <button onclick="loadModule(1)" class="w-full bg-slate-800 hover:bg-blue-600 text-xs text-slate-200 hover:text-white py-1.5 rounded transition-colors flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-download"></i>
+              <span>Muat Kode Modul 1</span>
+            </button>
           </div>
 
-          <button onclick="loadModule(1)" class="w-full bg-slate-800 hover:bg-blue-600 text-xs text-slate-200 hover:text-white py-1.5 rounded transition-colors flex items-center justify-center gap-1">
-            <i class="fa-solid fa-code"></i>
-            <span>Muat ke Editor</span>
-          </button>
+          <!-- Module 2 -->
+          <div class="bg-slate-900/70 border border-slate-700/80 rounded-xl p-3 hover:border-blue-500/50 transition-all">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Modul 2</span>
+              <span class="text-[10px] bg-emerald-950 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-800">CSS Dekorasi</span>
+            </div>
+            <h3 class="font-medium text-sm text-white mb-1">Warna &amp; Tombol Keren</h3>
+            <p class="text-xs text-slate-400 mb-2">Memberi warna latar, mengubah warna teks, dan membuat tombol.</p>
+
+            <div class="bg-slate-950/80 p-2 rounded text-[11px] text-slate-300 mb-2.5 border border-slate-800">
+              <span class="text-amber-400 font-semibold">🔍 Arti Simbol Utama:</span>
+              <ul class="list-disc list-inside mt-1 space-y-0.5 text-slate-400">
+                <li><code class="text-emerald-300">{ }</code> = Wadah Aturan Hiasan</li>
+                <li><code class="text-emerald-300">:</code> = Berarti "yaitu"</li>
+                <li><code class="text-emerald-300">;</code> = Titik Akhir Satu Perintah</li>
+              </ul>
+            </div>
+
+            <button onclick="loadModule(2)" class="w-full bg-slate-800 hover:bg-emerald-600 text-xs text-slate-200 hover:text-white py-1.5 rounded transition-colors flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-download"></i>
+              <span>Muat Kode Modul 2</span>
+            </button>
+          </div>
+
+          <!-- Module 3 -->
+          <div class="bg-slate-900/70 border border-slate-700/80 rounded-xl p-3 hover:border-blue-500/50 transition-all">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Modul 3</span>
+              <span class="text-[10px] bg-amber-950 text-amber-300 px-1.5 py-0.5 rounded border border-amber-800">JS Logika</span>
+            </div>
+            <h3 class="font-medium text-sm text-white mb-1">Tombol Interaktif Aksi</h3>
+            <p class="text-xs text-slate-400 mb-2">Membuat tombol yang jika diklik memunculkan pop-up pesan.</p>
+
+            <div class="bg-slate-950/80 p-2 rounded text-[11px] text-slate-300 mb-2.5 border border-slate-800">
+              <span class="text-amber-400 font-semibold">🔍 Arti Simbol Utama:</span>
+              <ul class="list-disc list-inside mt-1 space-y-0.5 text-slate-400">
+                <li><code class="text-amber-300">//</code> = Catatan Penjelasan (Diabaikan)</li>
+                <li><code class="text-amber-300">" "</code> = Pembungkus Teks Biasa</li>
+                <li><code class="text-amber-300">()</code> = Kurung Menjalankan Perintah</li>
+              </ul>
+            </div>
+
+            <button onclick="loadModule(3)" class="w-full bg-slate-800 hover:bg-amber-600 text-xs text-slate-200 hover:text-white py-1.5 rounded transition-colors flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-download"></i>
+              <span>Muat Kode Modul 3</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Module 2 -->
-        <div class="bg-slate-900/60 border border-slate-700/70 rounded-xl p-3 hover:border-blue-500/50 transition-all">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Modul 2</span>
-            <span class="text-[10px] bg-emerald-950 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-800">CSS</span>
-          </div>
-          <h3 class="font-medium text-sm text-white mb-1">Warna & Gaya Tombol</h3>
-          <p class="text-xs text-slate-400 mb-2">Menghias tampilan teks dan membuat tombol warna-warni.</p>
+        <!-- SECTION 2: SNIPPETS (ONE-CLICK INSERT) -->
+        <div id="sidecontent-snippets" class="space-y-3 hidden">
+          <p class="text-[11px] text-slate-400">Klik tombol di bawah untuk <b>menyisipkan elemen</b> langsung ke editor tanpa takut salah ketik:</p>
 
-          <div class="bg-slate-950/70 p-2 rounded text-[11px] text-slate-300 mb-2 border border-slate-800">
-            <span class="text-amber-400 font-semibold">🔍 Bedah Simbol:</span>
-            <ul class="list-disc list-inside mt-1 space-y-0.5 text-slate-400">
-              <li><code class="text-emerald-300">{ }</code> = Kurung Wadah Aturan</li>
-              <li><code class="text-emerald-300">:</code> = Penghubung (Yaitu)</li>
-              <li><code class="text-emerald-300">;</code> = Titik Akhir Perintah</li>
-            </ul>
+          <!-- HTML Snippets -->
+          <div class="space-y-1.5">
+            <span class="text-xs font-bold text-blue-400 flex items-center gap-1">
+              <i class="fa-brands fa-html5"></i> Elemen HTML
+            </span>
+            <div class="grid grid-cols-1 gap-1.5">
+              <button onclick="insertSnippet('html', '<h1>Judul Baru</h1>\n')" class="bg-slate-900 hover:bg-slate-700 text-left px-2.5 py-1.5 rounded text-xs text-slate-300 flex items-center justify-between border border-slate-700">
+                <span>➕ Tambah Judul (h1)</span>
+                <code class="text-[10px] text-slate-500">&lt;h1&gt;</code>
+              </button>
+              <button onclick="insertSnippet('html', '<p>Ini paragraf penjelasan baru.</p>\n')" class="bg-slate-900 hover:bg-slate-700 text-left px-2.5 py-1.5 rounded text-xs text-slate-300 flex items-center justify-between border border-slate-700">
+                <span>➕ Tambah Paragraf (p)</span>
+                <code class="text-[10px] text-slate-500">&lt;p&gt;</code>
+              </button>
+              <button onclick="insertSnippet('html', '<button class=\"btn\">Tombol Saya</button>\n')" class="bg-slate-900 hover:bg-slate-700 text-left px-2.5 py-1.5 rounded text-xs text-slate-300 flex items-center justify-between border border-slate-700">
+                <span>➕ Tambah Tombol</span>
+                <code class="text-[10px] text-slate-500">&lt;button&gt;</code>
+              </button>
+            </div>
           </div>
 
-          <button onclick="loadModule(2)" class="w-full bg-slate-800 hover:bg-emerald-600 text-xs text-slate-200 hover:text-white py-1.5 rounded transition-colors flex items-center justify-center gap-1">
-            <i class="fa-solid fa-code"></i>
-            <span>Muat ke Editor</span>
-          </button>
+          <!-- CSS Snippets -->
+          <div class="space-y-1.5 pt-2 border-t border-slate-700">
+            <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+              <i class="fa-brands fa-css3-alt"></i> Gaya CSS
+            </span>
+            <div class="grid grid-cols-1 gap-1.5">
+              <button onclick="insertSnippet('css', 'h1 {\n  color: #ef4444;\n}\n')" class="bg-slate-900 hover:bg-slate-700 text-left px-2.5 py-1.5 rounded text-xs text-slate-300 flex items-center justify-between border border-slate-700">
+                <span>🎨 Ubah Warna Judul Merah</span>
+                <code class="text-[10px] text-slate-500">color: red</code>
+              </button>
+              <button onclick="insertSnippet('css', 'body {\n  background-color: #f1f5f9;\n}\n')" class="bg-slate-900 hover:bg-slate-700 text-left px-2.5 py-1.5 rounded text-xs text-slate-300 flex items-center justify-between border border-slate-700">
+                <span>🎨 Ubah Latar Belakang</span>
+                <code class="text-[10px] text-slate-500">background</code>
+              </button>
+            </div>
+          </div>
+
+          <!-- JS Snippets -->
+          <div class="space-y-1.5 pt-2 border-t border-slate-700">
+            <span class="text-xs font-bold text-amber-400 flex items-center gap-1">
+              <i class="fa-brands fa-js"></i> Perintah JavaScript
+            </span>
+            <div class="grid grid-cols-1 gap-1.5">
+              <button onclick="insertSnippet('js', 'alert(\"Pesan ini muncul dari tombol!\");\n')" class="bg-slate-900 hover:bg-slate-700 text-left px-2.5 py-1.5 rounded text-xs text-slate-300 flex items-center justify-between border border-slate-700">
+                <span>⚡ Tampilkan Pop-Up Pesan</span>
+                <code class="text-[10px] text-slate-500">alert()</code>
+              </button>
+              <button onclick="insertSnippet('js', 'console.log(\"Catatan tes di konsol\");\n')" class="bg-slate-900 hover:bg-slate-700 text-left px-2.5 py-1.5 rounded text-xs text-slate-300 flex items-center justify-between border border-slate-700">
+                <span>⚡ Kirim Pesan ke Konsol</span>
+                <code class="text-[10px] text-slate-500">console.log</code>
+              </button>
+            </div>
+          </div>
         </div>
 
-        <!-- Module 3 -->
-        <div class="bg-slate-900/60 border border-slate-700/70 rounded-xl p-3 hover:border-blue-500/50 transition-all">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Modul 3</span>
-            <span class="text-[10px] bg-amber-950 text-amber-300 px-1.5 py-0.5 rounded border border-amber-800">JS</span>
-          </div>
-          <h3 class="font-medium text-sm text-white mb-1">Tombol Interaktif</h3>
-          <p class="text-xs text-slate-400 mb-2">Membuat tombol yang bisa memunculkan pesan saat diklik.</p>
+        <!-- SECTION 3: CHALLENGES -->
+        <div id="sidecontent-challenges" class="space-y-3 hidden">
+          <div class="bg-slate-900/80 p-3 rounded-xl border border-amber-500/30">
+            <h3 class="font-bold text-amber-400 text-xs mb-1 flex items-center gap-1.5">
+              <i class="fa-solid fa-trophy"></i> Tantangan Pemula #1
+            </h3>
+            <p class="text-xs text-slate-300 mb-2">Coba ikuti 3 langkah praktis ini untuk membuktikan Anda bisa coding!</p>
 
-          <div class="bg-slate-950/70 p-2 rounded text-[11px] text-slate-300 mb-2 border border-slate-800">
-            <span class="text-amber-400 font-semibold">🔍 Bedah Simbol:</span>
-            <ul class="list-disc list-inside mt-1 space-y-0.5 text-slate-400">
-              <li><code class="text-amber-300">//</code> = Catatan (Diabaikan Komputer)</li>
-              <li><code class="text-amber-300">" "</code> = Tanda Teks Biasa</li>
-              <li><code class="text-amber-300">()</code> = Kurung Perintah Aksi</li>
-            </ul>
+            <ol class="list-decimal list-inside space-y-2 text-xs text-slate-300">
+              <li class="bg-slate-950 p-2 rounded border border-slate-800">
+                <b>Langkah 1:</b> Muat Modul 1 ke editor, lalu ganti teks <i>"Halo, Saya Belajar Coding!"</i> dengan <b>Nama Anda sendiri</b>.
+              </li>
+              <li class="bg-slate-950 p-2 rounded border border-slate-800">
+                <b>Langkah 2:</b> Buka Tab CSS, ganti aturan <code class="text-emerald-400">color: #2563eb;</code> menjadi <code class="text-rose-400">color: red;</code>.
+              </li>
+              <li class="bg-slate-950 p-2 rounded border border-slate-800">
+                <b>Langkah 3:</b> Tekan tombol hijau <span class="text-emerald-400 font-bold">Jalankan</span> di atas dan lihat hasilnya!
+              </li>
+            </ol>
           </div>
-
-          <button onclick="loadModule(3)" class="w-full bg-slate-800 hover:bg-amber-600 text-xs text-slate-200 hover:text-white py-1.5 rounded transition-colors flex items-center justify-center gap-1">
-            <i class="fa-solid fa-code"></i>
-            <span>Muat ke Editor</span>
-          </button>
         </div>
 
       </div>
@@ -167,20 +277,25 @@
       
       <!-- Left Box: Code Editor Window -->
       <div class="flex-1 flex flex-col border-r border-slate-700 overflow-hidden bg-slate-900">
+        
         <!-- Editor Tabs Header -->
-        <div class="flex items-center bg-slate-950 border-b border-slate-800 text-xs text-slate-400 select-none">
-          <button id="tab-html" onclick="switchTab('html')" class="px-4 py-2 flex items-center gap-2 active-tab transition-all">
-            <i class="fa-brands fa-html5 text-orange-500"></i>
-            <span>HTML</span>
-          </button>
-          <button id="tab-css" onclick="switchTab('css')" class="px-4 py-2 flex items-center gap-2 transition-all hover:bg-slate-900">
-            <i class="fa-brands fa-css3-alt text-blue-500"></i>
-            <span>CSS</span>
-          </button>
-          <button id="tab-js" onclick="switchTab('js')" class="px-4 py-2 flex items-center gap-2 transition-all hover:bg-slate-900">
-            <i class="fa-brands fa-js text-yellow-400"></i>
-            <span>JavaScript</span>
-          </button>
+        <div class="flex items-center justify-between bg-slate-950 border-b border-slate-800 text-xs text-slate-400 select-none">
+          <div class="flex items-center">
+            <button id="tab-html" onclick="switchTab('html')" class="px-4 py-2 flex items-center gap-2 active-tab transition-all">
+              <i class="fa-brands fa-html5 text-orange-500"></i>
+              <span>HTML</span>
+            </button>
+            <button id="tab-css" onclick="switchTab('css')" class="px-4 py-2 flex items-center gap-2 transition-all hover:bg-slate-900">
+              <i class="fa-brands fa-css3-alt text-blue-500"></i>
+              <span>CSS</span>
+            </button>
+            <button id="tab-js" onclick="switchTab('js')" class="px-4 py-2 flex items-center gap-2 transition-all hover:bg-slate-900">
+              <i class="fa-brands fa-js text-yellow-400"></i>
+              <span>JavaScript</span>
+            </button>
+          </div>
+          
+          <span class="text-[11px] text-slate-500 pr-3 italic hidden sm:inline">💡 Ketik atau klik "Sisip Kode" di kiri</span>
         </div>
 
         <!-- Editor Container -->
@@ -198,10 +313,10 @@
         <div class="bg-slate-900 border-b border-slate-800 px-3 py-2 flex items-center justify-between text-xs text-slate-400">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-desktop text-slate-500"></i>
-            <span class="font-semibold text-slate-300">Live Preview (Hasil Langsung)</span>
+            <span class="font-semibold text-slate-300">Live Preview (Hasil Tampak Langsung)</span>
           </div>
           <span class="text-[10px] text-emerald-400 flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Auto-update
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Instan Update
           </span>
         </div>
 
@@ -210,18 +325,18 @@
           <iframe id="preview-frame" class="w-full h-full border-none"></iframe>
         </div>
 
-        <!-- JS Output Console Panel -->
-        <div class="h-32 bg-slate-950 border-t border-slate-800 flex flex-col shrink-0">
+        <!-- JS Output & Friendly Error Console -->
+        <div class="h-36 bg-slate-950 border-t border-slate-800 flex flex-col shrink-0">
           <div class="bg-slate-900 px-3 py-1.5 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400">
             <span class="font-mono text-[11px] flex items-center gap-1.5">
-              <i class="fa-solid fa-terminal text-yellow-500"></i> Konsol Output JS
+              <i class="fa-solid fa-terminal text-yellow-500"></i> Konsol Output &amp; Penerjemah Error
             </span>
             <button onclick="clearConsole()" class="hover:text-slate-200 text-[11px]">
               <i class="fa-solid fa-trash-can mr-1"></i> Bersihkan
             </button>
           </div>
-          <div id="console-output" class="flex-1 p-2 font-mono text-xs overflow-y-auto space-y-1 text-slate-300">
-            <div class="text-slate-500 italic text-[11px]">&gt; Konsol siap menerima output log...</div>
+          <div id="console-output" class="flex-1 p-2.5 font-mono text-xs overflow-y-auto space-y-1.5 text-slate-300">
+            <div class="text-slate-500 italic text-[11px]">&gt; Konsol siap. Jika ada kesalahan kode, petunjuk ramah akan muncul di sini...</div>
           </div>
         </div>
 
@@ -241,8 +356,8 @@
             <i class="fa-solid fa-book-open text-lg"></i>
           </div>
           <div>
-            <h2 class="font-bold text-white text-base">Kamus Simbol & Tanda Baca Coding</h2>
-            <p class="text-xs text-slate-400">Panduan lengkap arti simbol agar tidak bingung lagi</p>
+            <h2 class="font-bold text-white text-base">Kamus Simbol &amp; Tanda Baca Coding</h2>
+            <p class="text-xs text-slate-400">Penjelasan detail arti simbol agar tidak membuat pusing</p>
           </div>
         </div>
         <button onclick="closeDictionaryModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
@@ -250,35 +365,22 @@
         </button>
       </div>
 
-      <!-- Modal Body (Scrollable) -->
+      <!-- Modal Body -->
       <div class="flex-1 overflow-y-auto p-5 space-y-6 text-sm text-slate-300">
         
         <!-- Section HTML -->
         <div>
           <h3 class="text-blue-400 font-bold text-base mb-2 flex items-center gap-2 border-b border-slate-800 pb-1">
-            <i class="fa-brands fa-html5"></i> Simbol Dalam HTML (Struktur Bangunan)
+            <i class="fa-brands fa-html5"></i> Simbol HTML (Struktur Bangunan)
           </h3>
-          <p class="text-xs text-slate-400 mb-3">HTML menggunakan <b>Tag Pembungkus</b>. Seperti kardus, ada bagian pembuka dan penutup.</p>
-          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
             <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
               <div class="font-mono text-blue-300 font-bold mb-1">&lt; &gt; (Kurung Siku Pembuka)</div>
-              <div class="text-xs text-slate-300">Memberitahu komputer: <i>"Ini awal dari sebuah perintah/elemen baru"</i>. Contoh: <code class="text-amber-300">&lt;h1&gt;</code></div>
+              <div class="text-xs text-slate-300">Awal perintah elemen baru. Contoh: <code class="text-amber-300">&lt;h1&gt;</code></div>
             </div>
-
             <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
               <div class="font-mono text-blue-300 font-bold mb-1">&lt;/ &gt; (Tag Penutup)</div>
-              <div class="text-xs text-slate-300">Garis miring <code class="text-amber-300">/</code> artinya <i>"Selesai/Tutup bagian ini"</i>. Contoh: <code class="text-amber-300">&lt;/h1&gt;</code></div>
-            </div>
-
-            <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
-              <div class="font-mono text-blue-300 font-bold mb-1">&lt;!-- ... --&gt; (Komentar HTML)</div>
-              <div class="text-xs text-slate-300">Catatan rahasia pembuat kode. Komputer akan mengabaikan teks ini di layar.</div>
-            </div>
-
-            <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
-              <div class="font-mono text-blue-300 font-bold mb-1">class="..." atau id="..."</div>
-              <div class="text-xs text-slate-300">Memberi label / nama identitas pada elemen HTML agar mudah diwarnai di CSS.</div>
+              <div class="text-xs text-slate-300">Garis miring <code class="text-amber-300">/</code> artinya penutup bagian. Contoh: <code class="text-amber-300">&lt;/h1&gt;</code></div>
             </div>
           </div>
         </div>
@@ -286,29 +388,16 @@
         <!-- Section CSS -->
         <div>
           <h3 class="text-emerald-400 font-bold text-base mb-2 flex items-center gap-2 border-b border-slate-800 pb-1">
-            <i class="fa-brands fa-css3-alt"></i> Simbol Dalam CSS (Cat & Dekorasi)
+            <i class="fa-brands fa-css3-alt"></i> Simbol CSS (Cat &amp; Dekorasi)
           </h3>
-          <p class="text-xs text-slate-400 mb-3">CSS bertugas mengatur tata letak, ukuran, dan warna.</p>
-
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
             <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
-              <div class="font-mono text-emerald-300 font-bold mb-1">. (Titik) &amp; # (Pagar)</div>
-              <div class="text-xs text-slate-300">Titik <code class="text-amber-300">.</code> dipasang untuk memanggil nama class. Pagar <code class="text-amber-300">#</code> untuk memanggil id.</div>
-            </div>
-
-            <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
               <div class="font-mono text-emerald-300 font-bold mb-1">{ } (Kurung Kurawal)</div>
-              <div class="text-xs text-slate-300">Wadah/tempat menaruh semua aturan hiasan untuk elemen tersebut.</div>
+              <div class="text-xs text-slate-300">Wadah berisi aturan hiasan untuk elemen tersebut.</div>
             </div>
-
             <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
-              <div class="font-mono text-emerald-300 font-bold mb-1">: (Titik Dua)</div>
-              <div class="text-xs text-slate-300">Artinya <i>"yaitu"</i>. Menghubungkan hal yang mau diubah dengan nilainya. Contoh: <code class="text-amber-300">color: red;</code></div>
-            </div>
-
-            <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
-              <div class="font-mono text-emerald-300 font-bold mb-1 font-bold font-mono">; (Titik Koma)</div>
-              <div class="text-xs text-slate-300">Tanda titik pemberhentian. Menyatakan satu baris aturan hiasan sudah selesai. Wajib ada!</div>
+              <div class="font-mono text-emerald-300 font-bold mb-1">: dan ; (Titik Dua &amp; Titik Koma)</div>
+              <div class="text-xs text-slate-300"><code class="text-amber-300">:</code> artinya "yaitu", dan <code class="text-amber-300">;</code> adalah titik akhir perintah.</div>
             </div>
           </div>
         </div>
@@ -316,29 +405,16 @@
         <!-- Section JS -->
         <div>
           <h3 class="text-amber-400 font-bold text-base mb-2 flex items-center gap-2 border-b border-slate-800 pb-1">
-            <i class="fa-brands fa-js"></i> Simbol Dalam JavaScript (Mesin & Logika)
+            <i class="fa-brands fa-js"></i> Simbol JavaScript (Mesin &amp; Aksi)
           </h3>
-          <p class="text-xs text-slate-400 mb-3">JavaScript memberikan perintah interaktif saat diklik atau diinput.</p>
-
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
             <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
               <div class="font-mono text-amber-300 font-bold mb-1">// (Garis Miring Ganda)</div>
-              <div class="text-xs text-slate-300">Catatan penjelasan. Komputer tidak akan menjalankan teks apapun setelah tanda <code class="text-amber-300">//</code> ini.</div>
+              <div class="text-xs text-slate-300">Catatan rahasia. Teks setelah <code class="text-amber-300">//</code> diabaikan oleh komputer.</div>
             </div>
-
             <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
-              <div class="font-mono text-amber-300 font-bold mb-1 font-bold font-mono">" " atau ' ' (Tanda Kutip)</div>
-              <div class="text-xs text-slate-300">Memberi tahu komputer bahwa tulisan di dalamnya adalah <b>Teks Biasa</b>, bukan kode perintah.</div>
-            </div>
-
-            <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
-              <div class="font-mono text-amber-300 font-bold mb-1">( ) (Kurung Lengkung Aksi)</div>
-              <div class="text-xs text-slate-300">Wadah memberikan masukan/isi untuk sebuah perintah fungsi. Contoh: <code class="text-amber-300">alert("Halo")</code></div>
-            </div>
-
-            <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/50">
-              <div class="font-mono text-amber-300 font-bold mb-1">= (Sama Dengan)</div>
-              <div class="text-xs text-slate-300">Di JS, tanda <code class="text-amber-300">=</code> artinya <b>memasukkan/menyimpan nilai</b> ke dalam variabel (bukan matematika).</div>
+              <div class="font-mono text-amber-300 font-bold mb-1 font-mono">" " (Tanda Kutip Teks)</div>
+              <div class="text-xs text-slate-300">Memberi tahu komputer bahwa teks di dalamnya adalah tulisan biasa.</div>
             </div>
           </div>
         </div>
@@ -363,29 +439,29 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/htmlmixed/htmlmixed.min.js"></script>
 
   <script>
-    // Module Presets Data
+    // Preset Module Data
     const modules = {
       1: {
-        html: `<!-- MODUL 1: HTML Dasar -->\n<!-- Tag <h1> adalah pembungkus Judul Utama -->\n<h1>Halo, Saya Belajar Coding!</h1>\n\n<!-- Tag <p> adalah pembungkus Paragraf biasa -->\n<p>Ini adalah paragraf pertama saya. Coding ternyata tidak sesulit yang dibayangkan!</p>\n\n<button>Tombol Biasa</button>`,
+        html: `<!-- MODUL 1: HTML Dasar -->\n<!-- Tag <h1> untuk Judul Besar -->\n<h1>Halo, Nama Saya Pemula!</h1>\n\n<!-- Tag <p> untuk Paragraf -->\n<p>Saya sedang belajar membuat website pertama saya. Ternyata mudah dan menyenangkan!</p>`,
         css: `/* CSS Modul 1 */\nbody {\n  font-family: sans-serif;\n  padding: 20px;\n}`,
-        js: `// JS Modul 1 belum diperlukan`
+        js: `// Belum ada JS`
       },
       2: {
-        html: `<!-- MODUL 2: CSS Menghias Tampilan -->\n<h1 class="judul">Selamat Datang!</h1>\n<p>Lihatlah bagaimana warna dan gaya tombol ini diubah dengan CSS.</p>\n\n<!-- Tombol diberi nama kelas "tombol-keren" -->\n<button class="tombol-keren">Klik Saya</button>`,
-        css: `/* CSS Modul 2 */\nbody {\n  font-family: Arial, sans-serif;\n  padding: 20px;\n  background-color: #f8fafc;\n}\n\n/* Menghias Judul */\n.judul {\n  color: #2563eb; /* Warna teks biru */\n}\n\n/* Menghias Tombol Keren */\n.tombol-keren {\n  background-color: #10b981; /* Warna hijau */\n  color: white;              /* Teks putih */\n  padding: 10px 20px;       /* Ukuran ruang tombol */\n  border: none;             /* Tanpa garis pinggir */\n  border-radius: 8px;       /* Sudut membulat */\n  cursor: pointer;          /* Mengubah kursor jadi tangan */\n}`,
-        js: `// Belum ada JS di modul ini`
+        html: `<!-- MODUL 2: CSS Menghias -->\n<h1 class="judul">Selamat Datang!</h1>\n<p>Teks dan tombol di bawah sudah dihias menggunakan CSS.</p>\n\n<button class="tombol-keren">Klik Saya</button>`,
+        css: `/* CSS Modul 2 */\nbody {\n  font-family: Arial, sans-serif;\n  padding: 20px;\n}\n\n.judul {\n  color: #2563eb; /* Warna Biru */\n}\n\n.tombol-keren {\n  background-color: #10b981; /* Warna Hijau */\n  color: white;\n  padding: 10px 20px;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n}`,
+        js: `// Belum ada JS`
       },
       3: {
-        html: `<!-- MODUL 3: JavaScript Interaktif -->\n<h2>Aplikasi Sapaan Interaktif</h2>\n<p>Klik tombol di bawah untuk melihat keajaiban JavaScript!</p>\n\n<!-- Tombol diberi atribut onclick untuk memanggil fungsi JS -->\n<button class="btn" onclick="sapaPengunjung()">Sapa Saya!</button>`,
-        css: `/* CSS Modul 3 */\nbody {\n  font-family: sans-serif;\n  padding: 20px;\n  text-align: center;\n}\n\n.btn {\n  background-color: #f59e0b; /* Warna Oranye */\n  color: white;\n  padding: 12px 24px;\n  border: none;\n  border-radius: 6px;\n  font-size: 16px;\n  font-weight: bold;\n  cursor: pointer;\n}`,
-        js: `// MODUL 3: Perintah JavaScript\nfunction sapaPengunjung() {\n  // Memunculkan kotak pesan peringatan di browser\n  alert("Halo! Terima kasih sudah menekan tombol saya 😊");\n  \n  // Menampilkan pesan ke konsol di bawah\n  console.log("Tombol sapaan berhasil diklik oleh pengguna!");\n}`
+        html: `<!-- MODUL 3: JS Aksi -->\n<h2>Tombol Menyapa Interaktif</h2>\n<p>Klik tombol untuk memunculkan pesan pop-up:</p>\n\n<button class="btn" onclick="sapaPengunjung()">Sapa Saya!</button>`,
+        css: `body {\n  font-family: sans-serif;\n  padding: 20px;\n}\n.btn {\n  background-color: #f59e0b;\n  color: white;\n  padding: 10px 20px;\n  border: none;\n  border-radius: 6px;\n  cursor: pointer;\n}`,
+        js: `// MODUL 3: Perintah JavaScript\nfunction sapaPengunjung() {\n  alert("Halo! Senang berkenalan dengan Anda 😊");\n  console.log("Tombol berhasil diklik!");\n}`
       }
     };
 
     let editorHTML, editorCSS, editorJS;
     let activeTab = 'html';
 
-    // Initialize CodeMirror Editors
+    // Initialize Editors
     window.onload = () => {
       editorHTML = CodeMirror(document.getElementById('editor-html'), {
         mode: 'htmlmixed',
@@ -408,7 +484,7 @@
         value: modules[1].js
       });
 
-      // Auto update live preview when typing (with debounce)
+      // Auto update with debounce
       let timeout;
       const onCodeChange = () => {
         clearTimeout(timeout);
@@ -419,19 +495,15 @@
       editorCSS.on('change', onCodeChange);
       editorJS.on('change', onCodeChange);
 
-      // Initial Run
       runCode();
     };
 
-    // Tab Switching Logic
+    // Tab Editor Switch
     function switchTab(tab) {
       activeTab = tab;
-      
-      // Update Tab Styles
       ['html', 'css', 'js'].forEach(t => {
         const tabBtn = document.getElementById(`tab-${t}`);
         const editorEl = document.getElementById(`editor-${t}`);
-        
         if (t === tab) {
           tabBtn.classList.add('active-tab');
           editorEl.classList.remove('hidden');
@@ -441,13 +513,37 @@
         }
       });
 
-      // Refresh editor layout
       if (tab === 'html') editorHTML.refresh();
       if (tab === 'css') editorCSS.refresh();
       if (tab === 'js') editorJS.refresh();
     }
 
-    // Load Module Function
+    // Switch Sidebar Tab
+    function switchSideTab(tab) {
+      ['modules', 'snippets', 'challenges'].forEach(t => {
+        const btn = document.getElementById(`sidetab-${t}`);
+        const content = document.getElementById(`sidecontent-${t}`);
+        if (t === tab) {
+          btn.classList.add('active-side-tab');
+          content.classList.remove('hidden');
+        } else {
+          btn.classList.remove('active-side-tab');
+          content.classList.add('hidden');
+        }
+      });
+    }
+
+    // Insert Snippet into active editor
+    function insertSnippet(type, code) {
+      switchTab(type);
+      let targetEditor = type === 'html' ? editorHTML : (type === 'css' ? editorCSS : editorJS);
+      let doc = targetEditor.getDoc();
+      let cursor = doc.getCursor();
+      doc.replaceRange(code, cursor);
+      runCode();
+    }
+
+    // Load Module
     function loadModule(id) {
       if (modules[id]) {
         editorHTML.setValue(modules[id].html);
@@ -457,7 +553,7 @@
       }
     }
 
-    // Run Code and Render Preview
+    // Run Code
     function runCode() {
       const htmlContent = editorHTML.getValue();
       const cssContent = editorCSS.getValue();
@@ -466,7 +562,6 @@
       const previewFrame = document.getElementById('preview-frame');
       const previewDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
 
-      // Custom script to capture console.log from iframe
       const consoleOverrideScript = `
         <script>
           (function() {
@@ -476,7 +571,7 @@
               oldLog.apply(console, args);
             };
             window.onerror = function(msg, url, line) {
-              window.parent.postMessage({ type: 'CONSOLE_ERROR', data: msg + ' (Baris ' + line + ')' }, '*');
+              window.parent.postMessage({ type: 'CONSOLE_ERROR', data: msg, line: line }, '*');
               return false;
             };
           })();
@@ -502,25 +597,44 @@
       previewDoc.close();
     }
 
-    // Capture console messages from iframe
+    // Friendly Error Translator
+    function translateError(msg) {
+      if (msg.includes('Unexpected token')) return '💡 Terjadi kesalahan tanda baca (seperti tanda kurung atau petik yang belum ditutup).';
+      if (msg.includes('is not defined')) return '💡 Ada nama fungsi atau variabel yang dipanggil tetapi belum dibuat.';
+      if (msg.includes('missing ) after argument list')) return '💡 Anda lupa memasukkan tanda kurung tutup `)` di akhir fungsi.';
+      return '💡 Ada kesalahan pada penulisan baris kode JavaScript Anda.';
+    }
+
+    // Console Listener
     window.addEventListener('message', (event) => {
       const consoleOutput = document.getElementById('console-output');
       if (event.data && event.data.type === 'CONSOLE_LOG') {
         const logItem = document.createElement('div');
-        logItem.className = 'text-emerald-400 font-mono';
+        logItem.className = 'text-emerald-400 font-mono text-[11px]';
         logItem.innerText = `> ${event.data.data}`;
         consoleOutput.appendChild(logItem);
         consoleOutput.scrollTop = consoleOutput.scrollHeight;
       } else if (event.data && event.data.type === 'CONSOLE_ERROR') {
         const errorItem = document.createElement('div');
-        errorItem.className = 'text-rose-400 font-mono';
-        errorItem.innerText = `> ❌ Error: ${event.data.data}`;
+        errorItem.className = 'text-rose-400 font-mono text-[11px] bg-rose-950/40 p-1.5 rounded border border-rose-900/50';
+        const friendlyMsg = translateError(event.data.data);
+        errorItem.innerHTML = `⚠️ <b>Error (Baris ${event.data.line}):</b> ${event.data.data}<br><span class="text-amber-300 font-sans">${friendlyMsg}</span>`;
         consoleOutput.appendChild(errorItem);
         consoleOutput.scrollTop = consoleOutput.scrollHeight;
       }
     });
 
-    // Reset Editors
+    // Auto Format Simple
+    function formatCode() {
+      [editorHTML, editorCSS, editorJS].forEach(ed => {
+        let totalLines = ed.lineCount();
+        for (let i = 0; i < totalLines; i++) {
+          ed.indentLine(i);
+        }
+      });
+    }
+
+    // Reset
     function resetEditor() {
       editorHTML.setValue('');
       editorCSS.setValue('');
@@ -529,9 +643,8 @@
       runCode();
     }
 
-    // Clear Console
     function clearConsole() {
-      document.getElementById('console-output').innerHTML = '<div class="text-slate-500 italic text-[11px]">&gt; Konsol bersih.</div>';
+      document.getElementById('console-output').innerHTML = '<div class="text-slate-500 italic text-[11px]">&gt; Konsol dibersihkan.</div>';
     }
 
     // Modal Control
